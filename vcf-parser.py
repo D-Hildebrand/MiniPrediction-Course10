@@ -1,5 +1,5 @@
 """
-This module saves the variants in the vcf file to a list.
+This module saves the variants in the vcf file to a list. 
 """
 
 
