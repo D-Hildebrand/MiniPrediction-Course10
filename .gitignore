@@ -131,6 +131,7 @@ dmypy.json
 # Pycharm
 .idea
 
-# vcf and tsv files
+# Other files
 *.vcf
 *.tsv
+*.parq
