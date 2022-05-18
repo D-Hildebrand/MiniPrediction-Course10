@@ -16,9 +16,12 @@ def create_dataframe(input_parq, output_filename):
             aa = re.split("[0-9]+", df_rownames[i])[1:]
             ref = three_to_one(aa[0])
             alt = three_to_one(aa[1])
-            label = df.iloc[i, -1]
             score = bl.BLOSUM(62)[ref+alt]
-            tsv_writer.writerow([ref, alt, label, score])
+            if input_parq != "test_data_bio_prodict.parq":
+                label = df.iloc[i, -1]
+                tsv_writer.writerow([ref, alt, score, label])
+            else:
+                tsv_writer.writerow([ref, alt, score])
 
     out_file.close()
 
@@ -36,7 +39,10 @@ def create_tsv(input_parq):
 
     with open(output_filename, 'w') as out_file:
         output_tsv = csv.writer(out_file, delimiter='\t')
-        output_tsv.writerow(["REF", "ALT", "Label", "Score"])
+        if input_parq != "test_data_bio_prodict.parq":
+            output_tsv.writerow(["REF", "ALT", "Score", "Label"])
+        else:
+            output_tsv.writerow(["REF", "ALT", "Score"])
     out_file.close()
 
     return output_filename

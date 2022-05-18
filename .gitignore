@@ -133,5 +133,3 @@ dmypy.json
 
 # Other files
 *.vcf
-*.tsv
-*.parq
