@@ -93,7 +93,8 @@ def clf_test(df_test, clf):
     # Predicts the pathogenicity
     y_pred = clf.predict(x_test)
 
-    # Adds the prediction to the output file
+    # Adds the predictions to the output file
+    df_test['class'] = y_pred.tolist()
     y_pred.tolist().to_csv('test_data_predictions.tsv', sep="\t")
 
 
