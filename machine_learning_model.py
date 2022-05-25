@@ -37,8 +37,8 @@ def create_parq_df(input_parq):
     return df
 
 
-def parq_model(df):
-    parq = df[['conservationPro', 'conservationAla', 'conservationHis',
+def parq_model(df_train, df_valid):
+    x_train = df_train[['conservationPro', 'conservationAla', 'conservationHis',
                'conservationThr', 'conservationGln', 'conservationTyr',
                'conservationGly', 'conservationArg', 'conservationVal',
                'consWildType', 'conservationGlu', 'conservationMet',
@@ -46,18 +46,41 @@ def parq_model(df):
                'conservationLeu', 'conservationAsn', 'conservationSer',
                'conservationAsp', 'conservationCys', 'consVariant',
                'conservationTrp', 'score']]
-    pathogenicity = df['class']
+    y_train = df_train['class']
 
-    x_train, x_test, y_train, y_test = train_test_split(parq, pathogenicity,
-                                                        test_size=0.25)
+    x_valid = df_valid[['conservationPro', 'conservationAla', 'conservationHis',
+               'conservationThr', 'conservationGln', 'conservationTyr',
+               'conservationGly', 'conservationArg', 'conservationVal',
+               'consWildType', 'conservationGlu', 'conservationMet',
+               'conservationLys', 'conservationIle', 'conservationPhe',
+               'conservationLeu', 'conservationAsn', 'conservationSer',
+               'conservationAsp', 'conservationCys', 'consVariant',
+               'conservationTrp', 'score']]
+    y_valid = df_valid['class']
 
     clf = RandomForestClassifier(n_estimators=100)
 
     clf.fit(x_train, y_train)
 
-    y_pred = clf.predict(x_test)
+    y_pred = clf.predict(x_valid)
 
-    print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
+    print("Accuracy:", metrics.accuracy_score(y_valid, y_pred))
+    return clf
+
+
+def clf_test(df_test, clf):
+    x_test = df_test[
+        ['conservationPro', 'conservationAla', 'conservationHis',
+         'conservationThr', 'conservationGln', 'conservationTyr',
+         'conservationGly', 'conservationArg', 'conservationVal',
+         'consWildType', 'conservationGlu', 'conservationMet',
+         'conservationLys', 'conservationIle', 'conservationPhe',
+         'conservationLeu', 'conservationAsn', 'conservationSer',
+         'conservationAsp', 'conservationCys', 'consVariant',
+         'conservationTrp', 'score']]
+    y_pred = clf.predict(x_test)
+    df_test['class'] = y_pred.tolist()
+    df_test.to_csv('test_data_predictions.tsv', sep="\t")
 
 
 def blosum_classifier(df):
@@ -77,11 +100,11 @@ def blosum_classifier(df):
 
 
 def main():
-    # input_files = ["train_data_bio_prodict.parq",
-    #                "valid_data_bio_prodict.parq"]
-    # for input_parq in input_files:
-    df = create_parq_df("train_data_bio_prodict.parq")
-    parq_model(df)
+    df_train = create_parq_df("train_data_bio_prodict.parq")
+    df_valid = create_parq_df("valid_data_bio_prodict.parq")
+    df_test = create_parq_df("test_data_bio_prodict.parq")
+    clf = parq_model(df_train, df_valid)
+    clf_test(df_test, clf)
 
     # file = "train_data_bio_prodict.tsv"
     # df = file_reader(file)
