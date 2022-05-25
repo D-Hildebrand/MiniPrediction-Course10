@@ -8,6 +8,7 @@ def create_dataframe(input_parq, output_filename):
     # in dataset kolom class -> 1 = pathogeen (ziek), 0 = benign
     df = pd.read_parquet(input_parq, engine='pyarrow')
     df_rownames = df.index.values
+    print(df)
 
     with open(output_filename, "a") as out_file:
         tsv_writer = csv.writer(out_file, delimiter='\t')
