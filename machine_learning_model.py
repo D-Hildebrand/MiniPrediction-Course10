@@ -44,13 +44,13 @@ def parq_model(df_train, df_valid):
                  validation sets
     """
     df_columns = ['conservationPro', 'conservationAla', 'conservationHis',
-         'conservationThr', 'conservationGln', 'conservationTyr',
-         'conservationGly', 'conservationArg', 'conservationVal',
-         'consWildType', 'conservationGlu', 'conservationMet',
-         'conservationLys', 'conservationIle', 'conservationPhe',
-         'conservationLeu', 'conservationAsn', 'conservationSer',
-         'conservationAsp', 'conservationCys', 'consVariant',
-         'conservationTrp', 'score']
+                  'conservationThr', 'conservationGln', 'conservationTyr',
+                  'conservationGly', 'conservationArg', 'conservationVal',
+                  'consWildType', 'conservationGlu', 'conservationMet',
+                  'conservationLys', 'conservationIle', 'conservationPhe',
+                  'conservationLeu', 'conservationAsn', 'conservationSer',
+                  'conservationAsp', 'conservationCys', 'consVariant',
+                  'conservationTrp', 'score']
 
     # Retrieves the train and validation information and labels
     x_train = df_train[df_columns]
@@ -95,7 +95,7 @@ def clf_test(df_test, clf):
 
     # Adds the predictions to the output file
     df_test['class'] = y_pred.tolist()
-    y_pred.tolist().to_csv('test_data_predictions.tsv', sep="\t")
+    df_test.to_csv('test_data_predictions.tsv', sep="\t")
 
 
 def main():
