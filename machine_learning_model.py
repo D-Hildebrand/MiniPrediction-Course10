@@ -59,7 +59,7 @@ def parq_model(df_train, df_valid):
     y_valid = df_valid['class']
 
     # Creates the random forest classifier
-    clf = RandomForestClassifier(n_estimators=100)
+    clf = RandomForestClassifier(n_estimators=180, max_depth=25)
 
     # Fits the model
     clf.fit(x_train, y_train)
